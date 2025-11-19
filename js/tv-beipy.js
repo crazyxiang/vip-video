@@ -2,7 +2,13 @@
 function play() {
 	var rul = document.getElementById("url").value; //获取input链接
 	if(rul == "") {
-		alert("华瑶笔记提示您：请输入链接，没连接我给你解析个毛线")
+		//用于测试
+		rul = "https://www.iqiyi.com/v_1a0si8sf4fc.html"
+	} 
+	//
+	
+	if(rul == "") {
+		alert("请输入链接")
 	} else {
 		var jxApi = document.getElementById("jk"); //获取选择按钮
 		var jxurl = document.getElementById("jk").selectedIndex; //获取选中的
