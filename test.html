@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>
+			视界VIP视频全网解析
+		</title>
+		<meta name="keywords" content="优酷VIP解析,爱奇艺VIP解析,腾讯VIP解析,乐视VIP解析,芒果VIP解析,全网视频解析,VIP在线解析,视频VIP在线解析,VIP视频在线解析,vip视频解析,vip视频在线解析,vip解析,万能vip视频解析,vip视频全能解析,vip视频,手机vip视频解析,手机在线解析vip视频,优酷vip解析,爱奇艺vip解析,腾讯vip解析,乐视vip解析,芒果vip解析,vip视频解析, vip视频在线解析,  全网vip视频在线解析">
+		<meta name="description" content="本站为广大网友提供优酷VIP解析，爱奇艺VIP解析，腾讯VIP解析，乐视VIP解析，芒果VIP解析，视界解析VIP视频免费看，在线解析，vip视频解析，优酷vip解析，爱奇艺vip解析，腾讯vip解析，乐视vip解析，芒果vip解析等解析服务,方便广大用户VIP视频服务让你省去购买视频VIP费用，欢迎大家收藏本站，并将它介绍给您的朋友！">
+		<meta name="viewport" content="width=device-width,anicital-scale=1">
+
+		<script type="text/javascript" src="js/jquery.js"></script>
+
+		<script type="text/javascript" src="js/tv-beipy.js?v=1"></script>
+		
+		<style type="text/css">
+			.control-panel {
+				margin-bottom: 20px;
+				padding: 15px;
+				background-color: #f5f5f5;
+				border-radius: 5px;
+				width: 600px;
+			}
+			.control-panel button {
+				margin: 5px;
+				padding: 8px 15px;
+				background-color: #4CAF50;
+				color: white;
+				border: none;
+				border-radius: 3px;
+				cursor: pointer;
+			}
+			.control-panel button:hover {
+				background-color: #45a049;
+			}
+			.control-panel .description {
+				margin-top: 10px;
+				font-size: 14px;
+				color: #666;
+			}
+			.iframe-container {
+				position: relative;
+			}
+		</style>
+		
+		<script type="text/javascript">
+			// 方案1：使用代理页面加载视频（最佳解决方案）
+			function loadVideoWithProxy() {
+				// 创建一个代理页面的URL，将原始视频URL作为参数传递
+				var videoUrl = 'https://www.iqiyi.com/v_253qmx6qr88.html';
+				var proxyUrl = 'proxy.html?url=' + encodeURIComponent(videoUrl);
+				
+				// 设置iframe的src为代理页面
+				document.getElementById('palybox').src = proxyUrl;
+				console.log('使用代理页面方案');
+			}
+			
+			// 方案2：使用CSS覆盖技术（可能在某些浏览器中有效）
+			function applyCssOverlay() {
+				// 移除已有的遮罩层
+				var existingOverlay = document.getElementById('adOverlay');
+				if (existingOverlay) {
+					existingOverlay.remove();
+				}
+				
+				// 创建一个遮罩层覆盖在广告区域
+				var overlay = document.createElement('div');
+				overlay.id = 'adOverlay';
+				overlay.style.position = 'absolute';
+				overlay.style.width = '100%';
+				overlay.style.height = '100%';
+				overlay.style.background = 'transparent';
+				overlay.style.zIndex = '9999';
+				overlay.style.pointerEvents = 'none';
+				
+				// 将遮罩层添加到iframe容器中
+				var iframeContainer = document.getElementById('palybox').parentNode;
+				iframeContainer.style.position = 'relative';
+				iframeContainer.appendChild(overlay);
+				console.log('使用CSS覆盖方案');
+			}
+			
+			// 方案3：使用postMessage通信
+			function sendPostMessage() {
+				var iframe = document.getElementById('palybox');
+				
+				// 定义要发送的消息，包含样式信息
+				var message = {
+					action: 'applyStyle',
+					css: '#adv_wrap_hh { display: none !important; }'
+				};
+				
+				try {
+					// 向iframe发送消息，包含CSS样式
+					iframe.contentWindow.postMessage(JSON.stringify(message), '*');
+					console.log('已发送postMessage消息，尝试注入样式');
+				} catch(e) {
+					console.log('无法发送postMessage:', e);
+				}
+			}
+			
+			// 方案4：重置iframe到原始状态
+			function resetVideo() {
+				document.getElementById('palybox').src = 'https://jx.xmflv.com/?url=https://www.iqiyi.com/v_253qmx6qr88.html';
+				console.log('已重置视频到原始状态');
+				
+				// 移除遮罩层
+				var overlay = document.getElementById('adOverlay');
+				if (overlay) {
+					overlay.remove();
+				}
+			}
+			
+			// 设置消息监听器，接收来自iframe的响应
+			window.addEventListener('message', function(event) {
+				try {
+					// 尝试解析消息
+					var data = JSON.parse(event.data);
+					if (data.action === 'styleApplied') {
+						console.log('样式应用成功:', data.status);
+					} else if (data.action === 'error') {
+						console.log('发生错误:', data.message);
+					}
+				} catch (e) {
+					// 如果消息不是JSON格式，直接处理
+					if (event.data === 'styleApplied') {
+						console.log('样式应用成功');
+					}
+				}
+			}, false);
+			
+			// 页面加载完成后执行
+			window.onload = function() {
+				// 默认不执行任何方案，让用户手动选择
+				console.log('页面加载完成，请选择一个方案进行测试');
+			};
+		</script>
+	
+	</head>
+	<body>
+		<div class="control-panel">
+			<h3>跨域iframe广告隐藏方案测试</h3>
+			<button onclick="loadVideoWithProxy()">方案1：使用代理页面（推荐）</button>
+			<button onclick="applyCssOverlay()">方案2：CSS覆盖技术</button>
+			<button onclick="sendPostMessage()">方案3：PostMessage通信</button>
+			<button onclick="resetVideo()">重置视频</button>
+			<div class="description">
+				<p>由于浏览器同源策略限制，直接修改跨域iframe中的CSS是不可能的。请尝试以上方案：</p>
+				<p>1. 代理页面：通过本地代理页面加载视频，可绕过同源限制（最佳方案）</p>
+				<p>2. CSS覆盖：在当前页面添加遮罩层覆盖广告区域（有限效果）</p>
+				<p>3. PostMessage：尝试与iframe通信（需要iframe页面支持）</p>
+			</div>
+		</div>
+	
+		<div class="iframe-container">
+			<iframe width="600" height="400"
+				src="https://jx.xmflv.com/?url=https://www.iqiyi.com/v_253qmx6qr88.html" id="palybox" allowtransparency="true" frameborder="0"
+					scrolling="no" allowfullscreen="true" style="visibility: visible;">
+			</iframe>
+		</div>
+
+
+	</body>
+
+</html>

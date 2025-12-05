@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>视频代理播放</title>
+    <script type="text/javascript">
+        // 获取URL参数
+        function getQueryParam(name) {
+            var urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        
+        // 页面加载完成后执行
+        window.onload = function() {
+            // 获取视频URL
+            var videoUrl = getQueryParam('url');
+            if (videoUrl) {
+                // 创建iframe元素
+                var iframe = document.createElement('iframe');
+                iframe.id = 'videoFrame';
+                iframe.width = '100%';
+                iframe.height = '100%';
+                iframe.allowtransparency = 'true';
+                iframe.frameborder = '0';
+                iframe.scrolling = 'no';
+                iframe.allowfullscreen = 'true';
+                
+                // 设置iframe的src为解析后的视频URL
+                iframe.src = 'https://jx.xmflv.com/?url=' + encodeURIComponent(videoUrl);
+                
+                // 添加到页面
+                document.body.appendChild(iframe);
+                
+                // 监听iframe加载完成事件
+                iframe.onload = function() {
+                    try {
+                        // 尝试注入样式（如果同源的话）
+                        injectCustomStyle();
+                    } catch (e) {
+                        console.log('无法直接注入样式:', e);
+                        // 尝试其他方法
+                        setupMessageListener();
+                    }
+                };
+            }
+        };
+        
+        // 注入自定义样式
+        function injectCustomStyle() {
+            var style = document.createElement('style');
+            style.textContent = '#adv_wrap_hh { display: none !important; }';
+            
+            // 尝试注入到iframe中
+            try {
+                var iframeDoc = document.getElementById('videoFrame').contentDocument || 
+                               document.getElementById('videoFrame').contentWindow.document;
+                iframeDoc.head.appendChild(style);
+                console.log('样式已成功注入');
+            } catch (e) {
+                console.log('跨域限制，无法直接注入样式:', e);
+            }
+        }
+        
+        // 设置消息监听器，接收来自父页面的消息
+        function setupMessageListener() {
+            window.addEventListener('message', function(event) {
+                // 验证消息来源（可选）
+                // if (event.origin !== 'http://example.com') return;
+                
+                if (event.data === 'hideAd') {
+                    injectCustomStyle();
+                }
+            }, false);
+        }
+    </script>
+    
+    <!-- 直接在当前页面添加全局样式，可能会影响iframe内容（有限效果） -->
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <!-- iframe将在这里动态创建 -->
+</body>
+</html>
