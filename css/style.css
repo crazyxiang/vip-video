@@ -79,6 +79,9 @@ header .navbar-toggle {
 	border: none;
 }
 
+.footer-tit p{
+	margin:0;
+}
 .navbar-default .navbar-toggle:hover,
 .navbar-default .navbar-toggle:focus {
 	background-color: #333333;
@@ -294,6 +297,8 @@ div.url-box .btn-play:hover {
 .footer-tit{
 	text-align: center;
 	color: #888;
+	line-height: 24px;
+    padding: 10px 0;
 }
 .toot-tto{
 	margin-bottom:3em;
@@ -607,8 +612,6 @@ select.input-lg {
     text-align-last: left;
     text-indent: .5em;
     height: 42px;
-    outline-style: none;
-    -webkit-appearance: none;
     border-color: #0e90d2;
     border-radius: 0;
     font-size: 16px;
@@ -625,7 +628,7 @@ select.input-lg {
 .cnt-3-1 select, .cnt-3-2 input, .cnt-3-3 button {
     border-radius: 5px;
 }
-.btn {
+.cnt-3 .btn {
     display: inline-block;
     margin-bottom: 0;
     font-weight: 400;
@@ -667,17 +670,326 @@ select.input-lg {
 	height: 50px;
 	margin: 0 auto;
 	color: #fff;
-	display: flex;
-	justify-content: center;
 }
-.aim-header  h1{
+.aim-title {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	line-height: 50px;
+}
+.aim-header h1{
 	padding:0;
 	margin:0;
 	line-height: inherit;
 	font-size:24px;
+	margin:auto;
 }
-.aim-title {
-	line-height: 50px;
+
+/* 收藏按钮样式 */
+.add-favorite-btn {
+	cursor: pointer;
+	font-size: 14px;
+	
+}
+
+.add-favorite-btn:hover,
+.add-favorite-btn:focus {
+
+}
+
+.add-favorite-btn:active {
+	transform: translateY(0);
+}
+
+.add-favorite-btn.added {
+	background: #4caf50;
+	cursor: not-allowed;
+}
+
+.add-favorite-btn.added:hover,
+.add-favorite-btn.added:focus {
+	background: #4caf50;
+	transform: none;
+	box-shadow: none;
+}
+
+.add-favorite-btn .icon {
+	margin-right: 5px;
+	font-size: 16px;
+}
+
+/* 移动端适配 */
+@media (max-width: 767px) {
+	/* Header适配 */
+	.aim-title {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		line-height: normal;
+	}
+	
+	.aim-title h1 {
+		font-size: 18px !important;
+		margin-bottom: 10px;
+	}
+	
+	.add-favorite-btn {
+		font-size: 12px;
+		padding: 6px 12px;
+		margin-top: 5px;
+	}
+	
+	/* 视频区域适配 */
+	.video-box {
+		padding: 10px;
+		margin-bottom: 15px;
+	}
+	
+	/* 输入框适配 */
+	input[type="text"].form-control,
+	input[type="url"].form-control {
+		font-size: 14px;
+		padding: 12px 15px;
+		height: auto;
+	}
+	
+	/* 按钮适配 */
+	.btn,
+	.btn-default,
+	.btn-primary {
+		font-size: 16px;
+		padding: 12px 20px;
+		min-height: 48px;
+		touch-action: manipulation;
+		-webkit-tap-highlight-color: transparent;
+	}
+	
+	.btn:active,
+	.btn-default:active,
+	.btn-primary:active {
+		transform: translateY(0);
+	}
+	
+	/* 线路选择器适配 */
+	.btn-group {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 5px;
+		justify-content: center;
+	}
+	
+	.btn-group .btn {
+		margin: 3px;
+		min-width: 70px;
+		font-size: 14px;
+		padding: 8px 12px;
+	}
+	
+	/* 响应式iframe */
+	.aim-video iframe {
+		width: 100% !important;
+		max-width: 100% !important;
+		height: auto !important;
+		aspect-ratio: 16 / 9;
+	}
+	
+	/* 平台logo适配 */
+	.platform-logos {
+		padding: 10px 5px;
+	}
+	
+	.platform-logos img {
+		max-width: 40px;
+		max-height: 25px;
+		margin: 3px;
+	}
+	
+	/* 响应式间距调整 */
+	.container {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	
+	/* 字体大小适配 */
+	h2 {
+		font-size: 18px;
+	}
+	
+	p {
+		font-size: 14px;
+		line-height: 1.5;
+	}
+}
+
+/* 平板设备适配 */
+@media (min-width: 768px) and (max-width: 991px) {
+	.aim-title h1 {
+		font-size: 20px !important;
+	}
+	
+	.aim-video iframe {
+		width: 100% !important;
+		max-width: 100% !important;
+	}
+	
+	.btn-group .btn {
+		margin: 5px;
+		min-width: 80px;
+	}
+}
+
+/* 用户体验增强样式 */
+
+/* Toast提示样式 */
+.toast {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	padding: 12px 20px;
+	border-radius: 4px;
+	color: white;
+	font-size: 14px;
+	z-index: 9999;
+	opacity: 0;
+	transform: translateX(100%);
+	transition: opacity 0.3s ease, transform 0.3s ease;
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+	max-width: 300px;
+	word-wrap: break-word;
+}
+
+.toast.show {
+	opacity: 1;
+	transform: translateX(0);
+}
+
+.toast.info {
+	background-color: #2196F3;
+}
+
+.toast.success {
+	background-color: #4CAF50;
+}
+
+.toast.error {
+	background-color: #f44336;
+}
+
+.toast.warning {
+	background-color: #ff9800;
+}
+
+/* 加载状态样式 */
+.loading-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 9998;
+	transition: opacity 0.3s ease;
+}
+
+.loading-overlay.fade-out {
+	opacity: 0;
+}
+
+.loading-content {
+	text-align: center;
+	color: white;
+}
+
+.loading-spinner {
+	width: 40px;
+	height: 40px;
+	margin: 0 auto 15px;
+	border: 3px solid rgba(255, 255, 255, 0.3);
+	border-radius: 50%;
+	border-top-color: white;
+	animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* 表单错误样式 */
+.input-error {
+	border-color: #f44336 !important;
+	box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.2) !important;
+}
+
+.error-message {
+	color: #f44336;
+	font-size: 12px;
+	margin-top: 5px;
+	display: none;
+}
+
+/* 返回顶部按钮 */
+.back-to-top-btn {
+	position: fixed;
+	bottom: 30px;
+	right: 30px;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	background-color: #333;
+	color: white;
+	border: none;
+	font-size: 24px;
+	cursor: pointer;
+	opacity: 0;
+	transform: translateY(20px);
+	transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+	z-index: 999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.back-to-top-btn:hover {
+	background-color: #555;
+}
+
+.back-to-top-btn.show {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.back-to-top-btn:active {
+	transform: scale(0.95);
+}
+
+/* 移动端适配补充 */
+@media (max-width: 767px) {
+	/* Toast在移动端居中显示 */
+	.toast {
+		right: 50%;
+		transform: translateX(50%) translateY(-20px);
+		max-width: 80%;
+	}
+	
+	.toast.show {
+		transform: translateX(50%) translateY(0);
+	}
+	
+	/* 返回顶部按钮在移动端调整大小和位置 */
+	.back-to-top-btn {
+		bottom: 20px;
+		right: 20px;
+		width: 40px;
+		height: 40px;
+		font-size: 20px;
+	}
 }
 
     select.input-lg {
